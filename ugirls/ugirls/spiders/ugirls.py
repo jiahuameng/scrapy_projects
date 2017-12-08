@@ -14,8 +14,8 @@ class UGirlsSpider(SitemapSpider):
     sitemap_rules = [
         ('/Models/Detail/', 'parse_model_detail'),
         # ('/Models/', 'parse_category'),
-        # ('/Content/ListModel/', 'parse_content_list_model'),
-        # ('/Content/List/', 'parse_content_list'),
+        ('/Content/ListModel/', 'parse_content_list_model'),
+        ('/Content/List/', 'parse_content_list'),
         # ('/Content/', 'parse_product'),
         # ('/Shop/Detail/', 'parse_shop_detail'),
         # ('/Video/Detail', 'parse_video_detail'),
@@ -25,9 +25,23 @@ class UGirlsSpider(SitemapSpider):
     ]
 
     def parse_model_detail(self, response):
+        name = response.xpath('//h1[@class="name"]/text()').extract_first()
         image_urls = response.xpath('//img[@class="scaleimg"]/@src').extract()
         if image_urls:
-            yield ImgItem(image_urls=image_urls)
+            yield ImgItem(name=name, image_urls=image_urls)
+
+    def parse_content_list(self, response):
+        name = response.xpath('//div[@class="ren_head_c"]/a/text()').extract_first()
+        image_urls = response.xpath('//img[@class="gallery"]/@src').extract()
+        if image_urls:
+            yield ImgItem(name=name, image_urls=image_urls)
+
+    def parse_content_list_model(self, response):
+        name = response.xpath('//div[@class="ren_head"]/h3/text()').extract_first()
+        image_urls = response.xpath('//img[@class="gallery"]/@src').extract()
+        if image_urls:
+            yield ImgItem(name=name, image_urls=image_urls)
+
 
 #
 #  http://www.ugirls.com/Models/Detail/Model-25.html

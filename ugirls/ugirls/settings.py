@@ -67,7 +67,9 @@ DEFAULT_REQUEST_HEADERS = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+   'ugirls.pipelines.DuplicatesPipeline': 200,
    'ugirls.pipelines.ImgPipeline': 300,
+   'ugirls.pipelines.UgirlsPipeline': 400,
 }
 IMAGES_STORE = 'images'
 
